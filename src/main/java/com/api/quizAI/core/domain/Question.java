@@ -1,0 +1,32 @@
+package com.api.quizAI.core.domain;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import java.util.Set;
+import java.util.UUID;
+
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@Entity
+@Table(name = "questions")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
+public class Question
+{
+    @Builder.Default
+    @Id
+    private UUID id = UUID.randomUUID();
+
+    @Column(nullable = false, name = "question_value")
+    private String value;
+
+    @OneToMany(targetEntity = Answer.class, orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "question_id", nullable = false)
+    private Set<Answer> answers;
+}
