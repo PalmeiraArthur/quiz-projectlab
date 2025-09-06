@@ -2,10 +2,7 @@ package com.api.quizAI.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Set;
 import java.util.UUID;
@@ -16,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
 @ToString
 public class Question
 {

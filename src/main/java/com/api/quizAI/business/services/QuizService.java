@@ -15,6 +15,7 @@ import java.util.UUID;
 public class QuizService
 {
     private final QuizRepository quizRepository;
+    private final AIQuizGenerator aiQuizGenerator;
 
     private Quiz save(Quiz quiz)
     {
@@ -48,8 +49,14 @@ public class QuizService
         log.info("deleted quiz {}", quizId);
     }
 
-//    public Quiz generateQuiz(String topic, int numberOfQuestions, int numberOfAnswers)
-//    {
-//
-//    }
+    public Quiz generateQuiz(String topic, int numberOfQuestions, int numberOfAnswers)
+    {
+        Quiz quiz = aiQuizGenerator.generate(topic, numberOfQuestions, numberOfAnswers);
+
+        quiz = quizRepository.save(quiz);
+
+        log.info("persisted quiz in database {}", quiz.getId());
+
+        return quiz;
+    }
 }

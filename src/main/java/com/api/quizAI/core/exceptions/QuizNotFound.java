@@ -1,5 +1,6 @@
 package com.api.quizAI.core.exceptions;
 
+
 import java.util.UUID;
 
 public class QuizNotFound extends RuntimeException
