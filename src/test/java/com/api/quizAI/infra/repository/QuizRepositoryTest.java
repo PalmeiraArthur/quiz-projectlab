@@ -17,8 +17,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @DataJpaTest
+@DisplayName("Given the quiz repository")
 class QuizRepositoryTest
 {
+    @Autowired
+    QuestionRepository questionRepository;
+
+    @Autowired
+    AnswerRepository answerRepository;
+
     @Autowired
     QuizRepository quizRepository;
 
@@ -69,6 +76,40 @@ class QuizRepositoryTest
                 quizRepository.save(quiz);
                 quizRepository.findAll(); // trigger persistence
             });
+        }
+
+        @Test
+        @DisplayName("Then should add all questions and the answers of the quiz to the database")
+        void shouldSaveQuestionsAndAnswers()
+        {
+            Answer answer = Answer.builder().value("test").build();
+            Question question = Question.builder().value("test").answers(Set.of(answer)).build();
+            Quiz quiz = Quiz.builder().topic("test").questions(Set.of(question)).build();
+
+            quizRepository.save(quiz);
+
+            assertEquals(1, answerRepository.findAll().size());
+            assertEquals(1, questionRepository.findAll().size());
+        }
+    }
+
+    @Nested
+    @DisplayName("When quiz is deleted")
+    class delete
+    {
+        @Test
+        @DisplayName("Then should delete all questions and the answers of the quiz from database")
+        void shouldDeleteQuestionsAndAnswers()
+        {
+            Answer answer = Answer.builder().value("test").build();
+            Question question = Question.builder().value("test").answers(Set.of(answer)).build();
+            Quiz quiz = Quiz.builder().topic("test").questions(Set.of(question)).build();
+
+            quizRepository.save(quiz);
+            quizRepository.delete(quiz);
+
+            assertEquals(0, answerRepository.findAll().size());
+            assertEquals(0, questionRepository.findAll().size());
         }
     }
 }
