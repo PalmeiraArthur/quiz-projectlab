@@ -1,7 +1,6 @@
 package com.api.quizAI.infra.config;
 
-import com.api.quizAI.core.exceptions.QuizNotFound;
-import com.api.quizAI.core.exceptions.UnableToConvertJsonToObject;
+import com.api.quizAI.core.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -46,6 +45,38 @@ public class GlobalExceptionHandler
     {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, exception.getMessage());
         problemDetail.setTitle("Erro ao receber JSON do Quiz");
+        return problemDetail;
+    }
+
+    @ExceptionHandler(RoomNotFound.class)
+    public ProblemDetail handleRoomNotFoundException(RoomNotFound exception)
+    {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
+        problemDetail.setTitle("Sala não encontrada");
+        return problemDetail;
+    }
+
+    @ExceptionHandler(UserNotFound.class)
+    public ProblemDetail handleUserNotFoundException(UserNotFound exception)
+    {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
+        problemDetail.setTitle("Usuário não encontrado");
+        return problemDetail;
+    }
+
+    @ExceptionHandler(UserIsNotRoomOwner.class)
+    public ProblemDetail handleUserIsNotRoomOwnerException(UserIsNotRoomOwner exception)
+    {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, exception.getMessage());
+        problemDetail.setTitle("Usuário não autorizado a realizar essa ação na sala");
+        return problemDetail;
+    }
+
+    @ExceptionHandler(AnswerNotFound.class)
+    public ProblemDetail handleAnswerNotFoundException(AnswerNotFound exception)
+    {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
+        problemDetail.setTitle("Alternativa não encontrada");
         return problemDetail;
     }
 }

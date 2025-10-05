@@ -1,0 +1,56 @@
+package com.api.quizAI.core.domain;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.security.SecureRandom;
+import java.util.UUID;
+
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@Entity
+@Table(name = "rooms")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
+@ToString
+public class Room
+{
+    @Id
+    private final UUID id = UUID.randomUUID();
+
+    @Column(name = "room_code", nullable = false, unique = true)
+    private final String roomCode = generateRandomString();
+
+    @Column(name = "is_public", nullable = false)
+    private Boolean isPublic;
+
+    @Column(name = "max_number_players")
+    private Integer maxNumberOfPlayers;
+
+    @OneToOne
+    @JoinColumn(name = "quiz_id")
+    private Quiz quiz;
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "owner_id", nullable = false)
+    private User owner;
+
+    private String generateRandomString()
+    {
+        final String charactersAllowed = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        SecureRandom random = new SecureRandom();
+
+        StringBuilder stringBuilder = new StringBuilder();
+        int maxLength = 8;
+
+        for (int i = 0; i < maxLength; i++)
+        {
+            stringBuilder.append(random.nextInt(charactersAllowed.length()));
+        }
+
+        return stringBuilder.toString();
+    }
+}

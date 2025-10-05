@@ -21,3 +21,30 @@ create table if not exists answers(
         foreign key (question_id)
         references questions (id)
 );
+
+create table if not exists users(
+    id UUID primary key,
+    username varchar(30) not null
+);
+
+create table if not exists rooms(
+    id UUID primary key,
+    room_code char(8) not null unique,
+    is_public boolean not null default true,
+    max_number_players integer,
+    quiz_id UUID,
+    owner_id UUID not null,
+    constraint room_quiz_fk
+        foreign key (quiz_id)
+        references quizzes (id),
+    constraint room_user_fk
+            foreign key (owner_id)
+            references users (id)
+);
+
+create table if not exists scores(
+    id UUID primary key,
+    score integer not null default 0,
+    user_id UUID not null,
+    room_id UUID not null
+);
