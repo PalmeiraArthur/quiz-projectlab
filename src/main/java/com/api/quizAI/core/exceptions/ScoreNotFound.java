@@ -5,6 +5,6 @@ import java.util.UUID;
 public class ScoreNotFound extends RuntimeException
 {
     public ScoreNotFound(UUID scoreId) {
-        super("Não foi possível encontrar score de id" + scoreId);
+        super("Não foi possível encontrar score de id " + scoreId);
     }
 }
