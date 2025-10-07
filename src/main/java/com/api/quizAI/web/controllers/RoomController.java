@@ -4,6 +4,7 @@ import com.api.quizAI.business.services.RoomService;
 import com.api.quizAI.core.domain.Room;
 import com.api.quizAI.web.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -90,5 +92,21 @@ public class RoomController
         roomService.update(updateRoomDTO, roomId);
 
         log.info("successfully updated room {}", roomId);
+    }
+
+    @Operation(summary = "Find public rooms")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ok", content = @Content(array = @ArraySchema(schema = @Schema(implementation = PublicRoomsResponseDTO.class)))),
+    })
+    @GetMapping(consumes = "application/json")
+    public ResponseEntity<Set<PublicRoomsResponseDTO>> findPublicRooms()
+    {
+        log.info("starting find public rooms request");
+
+        Set<Room> publicRooms = roomService.findRooms();
+
+        log.info("successfully found {} rooms", publicRooms.size());
+
+        return new ResponseEntity<>(PublicRoomsResponseDTO.fromDomainToDTO(publicRooms), HttpStatus.OK);
     }
 }
