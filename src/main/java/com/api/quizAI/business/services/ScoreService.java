@@ -53,16 +53,18 @@ public class ScoreService
 
     public Integer calculatePlayerScore(UUID scoreId, AnswerRequestDTO answerRequest)
     {
-        Score score = findById(scoreId);
         Answer answer = answerService.findById(answerRequest.answerId());
 
         if (answer.isCorrectAnswer())
         {
-            score.addScore(10);
+            int pointsEarned = 10;
+            Score score = findById(scoreId);
+            score.addScore(pointsEarned);
             scoreRepository.save(score);
+
+            return pointsEarned;
         }
 
-
-        return score.getScore();
+        return 0;
     }
 }
