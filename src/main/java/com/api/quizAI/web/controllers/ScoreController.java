@@ -61,7 +61,7 @@ public class ScoreController
         log.info("successfully deleted scoreboard");
     }
 
-    @Operation(summary = "Calculate user answer points", description = "Return the total user score after the answer response")
+    @Operation(summary = "Calculate user answer points", description = "Return the points earned after answer")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok", content = @Content(schema = @Schema(implementation = ScoreResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ProblemDetailExample.class))),
@@ -74,10 +74,10 @@ public class ScoreController
     {
         log.info("starting answer points calculation {}", scoreId);
 
-        Integer totalUserScore = scoreService.calculatePlayerScore(scoreId, answerRequest);
+        Integer pointsEarned = scoreService.calculatePlayerScore(scoreId, answerRequest);
 
         log.info("successfully calculate points {}", scoreId);
 
-        return new ResponseEntity<>(new ScoreResponseDTO(totalUserScore), HttpStatus.OK);
+        return new ResponseEntity<>(new ScoreResponseDTO(pointsEarned), HttpStatus.OK);
     }
 }
