@@ -1,10 +1,7 @@
 package com.api.quizAI.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.UUID;
@@ -26,8 +23,9 @@ public class Score
     @Column(nullable = false)
     private int score = 0;
 
-    @Column(nullable = false, name = "user_id")
-    private UUID userId;
+    @OneToOne
+    @JoinColumn(nullable = false, name = "user_id")
+    private User user;
 
     @Column(nullable = false, name = "room_id")
     private UUID roomId;
