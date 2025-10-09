@@ -79,4 +79,20 @@ public class GlobalExceptionHandler
         problemDetail.setTitle("Alternativa não encontrada");
         return problemDetail;
     }
+
+    @ExceptionHandler(QuestionNotFound.class)
+    public ProblemDetail handleQuestionNotFoundException(QuestionNotFound exception)
+    {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
+        problemDetail.setTitle("Questão não encontrada");
+        return problemDetail;
+    }
+
+    @ExceptionHandler(NoneCorrectAnswerFound.class)
+    public ProblemDetail handleNoneCorrectAnswerFoundException(NoneCorrectAnswerFound exception)
+    {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FAILED_DEPENDENCY, exception.getMessage());
+        problemDetail.setTitle("Alternativa correta não encontrada");
+        return problemDetail;
+    }
 }
