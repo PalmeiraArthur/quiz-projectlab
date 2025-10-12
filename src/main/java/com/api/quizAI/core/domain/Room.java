@@ -44,11 +44,11 @@ public class Room
         SecureRandom random = new SecureRandom();
 
         StringBuilder stringBuilder = new StringBuilder();
-        int maxLength = 8;
+        int maxCodeLength = 8;
 
-        for (int i = 0; i < maxLength; i++)
+        for (int i = 0; i < maxCodeLength; i++)
         {
-            stringBuilder.append(random.nextInt(charactersAllowed.length()));
+            stringBuilder.append(charactersAllowed.charAt(random.nextInt(0, charactersAllowed.length())));
         }
 
         return stringBuilder.toString();
